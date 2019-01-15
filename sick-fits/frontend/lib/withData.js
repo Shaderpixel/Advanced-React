@@ -34,7 +34,7 @@ function createClient({ headers }) {
       },
       defaults: {
         // default state
-        cartOpen: true,
+        cartOpen: false,
       },
     },
   });

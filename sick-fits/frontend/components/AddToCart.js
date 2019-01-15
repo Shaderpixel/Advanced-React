@@ -30,8 +30,8 @@ class AddToCart extends React.Component {
     });
 
     // 2. payload comes with the cartItem that is added. Check if there are existing items inside data.me.cart then increase quantity else create new cartItem
-    console.log('me', data.me);
-    console.log('payload.data', payload.data);
+    // console.log('me', data.me);
+    // console.log('payload.data', payload.data);
     const { cart } = data.me;
     if (payload.data.addToCart.id.startsWith('-')) {
       // payload comes from optimistic response because of negative random number
@@ -50,7 +50,7 @@ class AddToCart extends React.Component {
         cart[existingCartItemIndex].quantity += 1;
       }
 
-      console.log('me2', data.me);
+      // console.log('me2', data.me);
       // write data to cache
       cache.writeQuery({
         query: CURRENT_USER_QUERY,
@@ -71,7 +71,7 @@ class AddToCart extends React.Component {
       }
 
       // cart.length === 0 && cart.push(payload.data.addToCart);
-      console.log('me3', data.me);
+      // console.log('me3', data.me);
       cache.writeQuery({
         query: CURRENT_USER_QUERY,
         data,

@@ -14,7 +14,7 @@ const Nav = () => (
         <Link href="/items">
           <a>Shop</a>
         </Link>
-        {console.log('Nav', me)}
+        {/* {console.log('Nav', me)} */}
         {me && (
           <>
             <Link href="/sell">

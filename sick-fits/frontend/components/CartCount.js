@@ -3,21 +3,22 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-// this should not be a span, it is not valid html
+// this should not be a span, it is not valid html!!
 const AnimationStyles = styled.span`
   position: relative;
   .count {
     display: block;
     position: relative;
-    transition: all 40000ms;
     backface-visibility: hidden;
+    transition: all 4000ms; /* seems to be broken in Chrome, can be fixed by transition on active classes */
   }
-  /* Initial State of the entered dt */
+  /* Initial State of the entered dot */
   .count-enter {
     transform: rotateX(0.5turn);
   }
   .count-enter-active {
     transform: rotateX(0);
+    /* transition: all 4000ms; */
   }
   .count-exit {
     position: absolute;
@@ -26,6 +27,7 @@ const AnimationStyles = styled.span`
   }
   .count-exit-active {
     transform: rotateX(0.5turn);
+    /* transition: all 4000ms; */
   }
 `;
 
@@ -51,7 +53,7 @@ const CartCount = ({ count }) => (
         className="count"
         classNames="count"
         key={count}
-        timeout={{ enter: 40000, exit: 40000 }}
+        timeout={{ enter: 4000, exit: 4000 }}
       >
         <Dot>{count}</Dot>
       </CSSTransition>
