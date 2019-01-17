@@ -13,6 +13,7 @@ const SINGLE_ITEM_QUERY = gql`
       title
       description
       price
+      image
     }
   }
 `;
@@ -23,17 +24,24 @@ const UPDATE_ITEM_MUTATION = gql`
     $title: String
     $description: String
     $price: Int
+    $image: String
+    $largeImage: String
+    $imagePublicId: String
   ) {
     updateItem(
       id: $id
       title: $title
       description: $description
       price: $price
+      image: $image
+      largeImage: $largeImage
+      imagePublicId: $imagePublicId
     ) {
-      id #return the id
+      id # return the id
       title
       description
       price
+      image # return the updated image so that we can update the state
     }
   }
 `;
@@ -43,7 +51,7 @@ class UpdateItem extends Component {
 
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === 'number' ? parseFloat(value) : value;
+    const val = value && type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -58,13 +66,39 @@ class UpdateItem extends Component {
         ...this.state,
       },
     });
+    this.setState({ image: res.data.updateItem.image });
     console.log('updated');
+  };
+
+  uploadFile = async e => {
+    console.log(e.target.files);
+    const files = e.target.files;
+    if (!files.length) return; // no files added
+    // console.log('files', files);
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+    const res = await fetch(
+      'https://api.cloudinary.com/v1_1/shaderpixel/image/upload',
+      {
+        method: 'POST',
+        body: data,
+      }
+    );
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url,
+      imagePublicId: file.public_id,
+    });
   };
 
   render() {
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading }) => {
+          console.log('data', data);
           if (loading) return <p>Loading...</p>;
           if (!data.item) return <p>No Item Found for ID {this.props.id}.</p>;
           return (
@@ -110,6 +144,23 @@ class UpdateItem extends Component {
                         defaultValue={data.item.description}
                         onChange={this.handleChange}
                       />
+                    </label>
+                    <label htmlFor="image">
+                      Image
+                      <input
+                        type="file"
+                        id="image"
+                        description="image"
+                        placeholder="Upload an Image"
+                        onChange={this.uploadFile}
+                      />
+                      {data.item.image && (
+                        <img
+                          src={this.state.image || data.item.image}
+                          alt="existing upload preview"
+                          width="200"
+                        />
+                      )}
                     </label>
                     <button type="submit">
                       Sav{loading ? 'ing' : 'e'} Changes

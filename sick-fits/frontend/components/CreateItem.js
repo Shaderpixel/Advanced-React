@@ -14,6 +14,7 @@ const CREATE_ITEM_MUTATION = gql`
     $price: Int!
     $image: String!
     $largeImage: String!
+    $imagePublicId: String!
   ) {
     createItem( # Storing field values using variables of the same name. createItem comes from schema.graphql in the backend
       title: $title
@@ -21,6 +22,7 @@ const CREATE_ITEM_MUTATION = gql`
       price: $price
       image: $image
       largeImage: $largeImage
+      imagePublicId: $imagePublicId
     ) {
       id #return the id
     }
@@ -33,12 +35,13 @@ class CreateItem extends Component {
     description: '',
     image: '',
     largeImage: '',
+    imagePublicId: '',
     price: 0,
   };
 
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === 'number' ? parseFloat(value) : value;
+    const val = value && (type === 'number' ? parseFloat(value) : value);
     this.setState({ [name]: val });
   };
 
@@ -60,6 +63,7 @@ class CreateItem extends Component {
     this.setState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
+      imagePublicId: file.public_id,
     });
   };
 
@@ -83,7 +87,7 @@ class CreateItem extends Component {
             }}
           >
             <Error error={error} />
-            {/* Only displayed if error is passed to the Error component. SEe ErrorMessage.js */}
+            {/* Only displayed if error is passed to the Error component. See ErrorMessage.js */}
             <fieldset disabled={loading} aria-busy={loading}>
               <label htmlFor="file">
                 File
