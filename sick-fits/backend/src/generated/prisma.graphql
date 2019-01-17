@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/richard-lock/shader-sick-fits-test1/dev
-# timestamp: Sat Jan 12 2019 15:31:37 GMT-0600 (CST)
+# timestamp: Mon Jan 14 2019 21:20:12 GMT-0600 (CST)
 
 type AggregateCartItem {
   count: Int!
@@ -330,6 +330,7 @@ type Item implements Node {
   description: String!
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int!
   user: User!
 }
@@ -349,6 +350,7 @@ input ItemCreateInput {
   description: String!
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int!
   user: UserCreateOneInput!
 }
@@ -378,6 +380,8 @@ enum ItemOrderByInput {
   image_DESC
   largeImage_ASC
   largeImage_DESC
+  imagePublicId_ASC
+  imagePublicId_DESC
   price_ASC
   price_DESC
   updatedAt_ASC
@@ -392,6 +396,7 @@ type ItemPreviousValues {
   description: String!
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int!
 }
 
@@ -439,6 +444,7 @@ input ItemUpdateDataInput {
   description: String
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int
   user: UserUpdateOneRequiredInput
 }
@@ -448,6 +454,7 @@ input ItemUpdateInput {
   description: String
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int
   user: UserUpdateOneRequiredInput
 }
@@ -457,6 +464,7 @@ input ItemUpdateManyMutationInput {
   description: String
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int
 }
 
@@ -683,6 +691,46 @@ input ItemWhereInput {
 
   """All values not ending with the given string."""
   largeImage_not_ends_with: String
+  imagePublicId: String
+
+  """All values that are not equal to given value."""
+  imagePublicId_not: String
+
+  """All values that are contained in given list."""
+  imagePublicId_in: [String!]
+
+  """All values that are not contained in given list."""
+  imagePublicId_not_in: [String!]
+
+  """All values less than the given value."""
+  imagePublicId_lt: String
+
+  """All values less than or equal the given value."""
+  imagePublicId_lte: String
+
+  """All values greater than the given value."""
+  imagePublicId_gt: String
+
+  """All values greater than or equal the given value."""
+  imagePublicId_gte: String
+
+  """All values containing the given string."""
+  imagePublicId_contains: String
+
+  """All values not containing the given string."""
+  imagePublicId_not_contains: String
+
+  """All values starting with the given string."""
+  imagePublicId_starts_with: String
+
+  """All values not starting with the given string."""
+  imagePublicId_not_starts_with: String
+
+  """All values ending with the given string."""
+  imagePublicId_ends_with: String
+
+  """All values not ending with the given string."""
+  imagePublicId_not_ends_with: String
   price: Int
 
   """All values that are not equal to given value."""

@@ -5,6 +5,7 @@ const { promisify } = require('util'); // node built in module to turn callback 
 const { transport, makeANiceEmail } = require('../mail');
 const { hasPermission } = require('../utils');
 const stripe = require('../stripe');
+const cloudinary = require('../cloudinary');
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
@@ -29,11 +30,32 @@ const Mutations = {
     return item;
   },
 
-  updateItem(parent, args, ctx, info) {
+  async updateItem(parent, args, ctx, info) {
     // first take a copy of the updates
     const updates = { ...args };
+    const itemId = args.id;
     // remove the ID from the updates
     delete updates.id;
+    // use the itemId to query for the item's existing imagePublicID
+    const item = await ctx.db.query.item({
+      where: { id: itemId },
+    });
+    // TODO need to check if images are part of the args before calling the delete function args.image && deleteImage()
+
+    function deleteImage(imagePublicId) {
+      cloudinary.v2.uploader.destroy(
+        imagePublicId, { invalidate: true },
+        (error, result) => {
+          if (error) console.log(`Error deleting image: ${JSON.stringify(error)}`);
+          console.log(`Result of deleting image: ${JSON.stringify(result.result)}`);
+        },
+      );
+    }
+
+    // use Cloudinary SDK to delete the existing image via the signed preset
+    const { imagePublicId } = item;
+    args.image && deleteImage(imagePublicId);
+
     // run the update method
     return ctx.db.mutation.updateItem(
       {

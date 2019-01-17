@@ -24,6 +24,7 @@ type Item {
   description: String!
   image: String
   largeImage: String
+  imagePublicId: String
   price: Int!
   user: User!
 }

@@ -12,10 +12,19 @@ type Mutation {
     price: Int
     image: String
     largeImage: String
+    imagePublicId: String
   ): Item!
 
   # TODO add ability to update images
-  updateItem(id: ID!, title: String, description: String, price: Int): Item!
+  updateItem(
+    id: ID!
+    title: String
+    description: String
+    price: Int
+    image: String
+    largeImage: String
+    imagePublicId: String
+  ): Item!
 
   deleteItem(id: ID!): Item!
 
