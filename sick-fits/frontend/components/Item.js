@@ -40,7 +40,6 @@ export default class Item extends Component {
         <PriceTag>{formatCurrency(item.price)}</PriceTag>
         <p>{item.description}</p>
         <div className="buttonList">
-          {' '}
           {/* buttonList class comes from ItemStyles.js */}
           <Link
             href={{
