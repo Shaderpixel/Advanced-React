@@ -59,19 +59,20 @@ class UpdateItem extends Component {
     // console.log(updateItemMutation);
     e.preventDefault();
     console.log('Updating Item!!');
-    console.log(this.state);
+    // console.log(this.state);
     const res = await updateItemMutation({
       variables: {
         id: this.props.id,
         ...this.state,
       },
     });
-    this.setState({ image: res.data.updateItem.image });
-    console.log('updated');
+    // Object.keys(this.state).forEach(key => (this.state[key] = '')); setting values to null will mean on subsequent updates we are deleting those values in the database
+    this.state = {};
+    console.log(this.state);
   };
 
   uploadFile = async e => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
     const files = e.target.files;
     if (!files.length) return; // no files added
     // console.log('files', files);
@@ -103,7 +104,13 @@ class UpdateItem extends Component {
           if (!data.item) return <p>No Item Found for ID {this.props.id}.</p>;
           return (
             // data and loading from payload is now exposed to Mutation because of parent child relationship
-            <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
+            <Mutation
+              mutation={UPDATE_ITEM_MUTATION}
+              variables={this.state}
+              refetchQueries={[
+                { query: SINGLE_ITEM_QUERY, variables: { id: this.props.id } },
+              ]}
+            >
               {(updateItem, { loading, error }) => (
                 // updateItem is the mutation call, this.updateItem is the component method
                 <Form onSubmit={e => this.updateItem(e, updateItem)}>
@@ -145,6 +152,7 @@ class UpdateItem extends Component {
                         onChange={this.handleChange}
                       />
                     </label>
+                    {/* The upload image field can be a component of its own with a unique key (possibly updated_date) and have a local state of its own that can be reset when the key changes https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key */}
                     <label htmlFor="image">
                       Image
                       <input
