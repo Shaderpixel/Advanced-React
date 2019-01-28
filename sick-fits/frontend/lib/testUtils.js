@@ -12,6 +12,7 @@ const fakeItem = () => ({
   title: 'dogs are best',
   description: 'dogs',
   largeImage: 'dog.jpg',
+  imagePublicId: '123abc',
 });
 
 const fakeUser = () => ({

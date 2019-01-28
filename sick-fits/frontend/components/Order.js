@@ -89,4 +89,5 @@ class Order extends React.Component {
   }
 }
 
+export { SINGLE_ORDER_QUERY };
 export default Order;

@@ -59,7 +59,7 @@ class CreateItem extends Component {
       }
     );
     const file = await res.json();
-    console.log(file);
+    // console.log(file);
     this.setState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
@@ -73,6 +73,7 @@ class CreateItem extends Component {
         {(createItem, { loading, error }) => (
           // called bool whether the query has been executed, data gives us the data that has been returned
           <Form
+            data-test="form"
             onSubmit={async e => {
               // stop the form from submitting
               e.preventDefault();

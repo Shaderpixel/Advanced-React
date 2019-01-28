@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import { CURRENT_USER_QUERY } from './User';
 
 const ADD_TO_CART_MUTATION = gql`
@@ -9,7 +10,7 @@ const ADD_TO_CART_MUTATION = gql`
       id
       quantity
       item {
-        # mirroring what is queried inside of User component
+        # mirroring cart.item in result of CURRENT_USER_QUERY (User component) so that we can use this to write to cache
         id
         image
         price
@@ -22,6 +23,17 @@ const ADD_TO_CART_MUTATION = gql`
 `;
 
 class AddToCart extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    itemDetails: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      description: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
   update = (cache, payload) => {
     console.log('Running add to cart update fn');
     // 1. read the cache and make a copy
@@ -57,7 +69,7 @@ class AddToCart extends React.Component {
         data,
       });
     } else {
-      // payload comes from server response. If cartItem exists remove it from cart and replace it with the new cartItem in case details changed, otherwise push new cartItem into cart
+      // payload comes from server response after mutation completes. If cartItem exists remove it from cart and replace it with the new cartItem in case details changed, otherwise push new cartItem into cart
       const payloadCartItemId = payload.data.addToCart.id;
       const matchingCartItemIndex = cart.findIndex(
         cartItem => cartItem.id === payloadCartItemId
@@ -109,4 +121,5 @@ class AddToCart extends React.Component {
   }
 }
 
+export { ADD_TO_CART_MUTATION };
 export default AddToCart;
