@@ -1,4 +1,3 @@
-// let's go!
 const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: 'variables.env' });
 const jwt = require('jsonwebtoken');
