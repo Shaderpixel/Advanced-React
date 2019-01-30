@@ -37,6 +37,7 @@ server.express.use(async (req, res, next) => {
   next();
 });
 
+// Start the server
 server.start({
   // cors to only allow our website accessing the endpoint
   cors: {
