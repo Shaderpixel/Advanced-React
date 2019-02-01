@@ -55,9 +55,15 @@ const Permissions = props => (
             </tr>
           </thead>
           <tbody>
-            {data.users.map(user => (
-              <UserPermissions user={user} key={user.id} />
-            ))}
+            {data.users ? (
+              data.users.map(user => (
+                <UserPermissions user={user} key={user.id} />
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8">You Do Not Have Sufficient Privilege</td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </>
