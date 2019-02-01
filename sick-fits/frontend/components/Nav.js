@@ -26,6 +26,16 @@ const Nav = () => (
             <Link href="/me">
               <a>Account</a>
             </Link>
+            {// IF right permissions show permissions screen
+            me.permissions.some(permission =>
+              ['ADMIN', 'PERMISSIONUPDATE'].includes(permission)
+            ) ? (
+              <Link href="/permissions">
+                <a>Permissions</a>
+              </Link>
+            ) : (
+              ''
+            )}
             <Signout />
             <Mutation mutation={TOGGLE_CART_MUTATION}>
               {toggleCart => (
