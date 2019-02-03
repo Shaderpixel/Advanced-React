@@ -47,7 +47,14 @@ class CreateItem extends Component {
 
   uploadFile = async e => {
     const files = e.target.files;
-    // TODO should check if no image files were added
+    if (!files.length) {
+      this.setState({
+        image: '',
+        largeImage: '',
+        imagePublicId: '',
+      });
+      return;
+    } // no files added
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'sickfits');
