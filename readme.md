@@ -9,3 +9,5 @@ This branch contains the code and setup for the following deployment destination
 - React + Next & Apollo: Now.sh
 
 Deployment to Now.sh requires use of alias to keep deployment endpoints constant.
+
+App is live at https://sick-fits-frontend.now.sh/
