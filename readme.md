@@ -2,6 +2,7 @@
 
 # Advanced React & GraphQL
 
+<<<<<<< HEAD
 This branch contains the code and setup for the following deployment destinations:
 
 - Prisma: Heroku
