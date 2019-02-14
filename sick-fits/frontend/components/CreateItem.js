@@ -5,6 +5,7 @@ import Router from 'next/router';
 import Form from './styles/Form';
 import formatMoney from '../lib/formatMoney';
 import Error from './ErrorMessage';
+import { PAGINATION_QUERY } from './Pagination';
 
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION(
@@ -76,7 +77,11 @@ class CreateItem extends Component {
 
   render() {
     return (
-      <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
+      <Mutation
+        mutation={CREATE_ITEM_MUTATION}
+        variables={this.state}
+        refetchQueries={[{ query: PAGINATION_QUERY }]}
+      >
         {(createItem, { loading, error }) => (
           // called bool whether the query has been executed, data gives us the data that has been returned
           <Form
@@ -88,10 +93,12 @@ class CreateItem extends Component {
               // call the mutation
               const res = await createItem();
               // change them to the single item page
-              Router.push({
-                pathname: '/item',
-                query: { id: res.data.createItem.id },
-              });
+              if (!loading && !error) {
+                Router.push({
+                  pathname: '/item',
+                  query: { id: res.data.createItem.id },
+                });
+              }
             }}
           >
             <Error error={error} />
