@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
@@ -32,15 +33,20 @@ class Signin extends Component {
         variables={this.state}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-        {(signup, { error, loading }) => (
+        {(signin, { error, loading }) => (
           <Form
             method="post"
             onSubmit={async e => {
               e.preventDefault();
-              const res = await signup();
+              const res = await signin();
               // You can use the response to make some custom message to the user
               // clear the form by setting the state to blanks
               this.setState({ email: '', password: '' });
+              if (!error && !loading && Object.values(res.data.signin).length) {
+                Router.push({
+                  pathname: '/',
+                });
+              }
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
