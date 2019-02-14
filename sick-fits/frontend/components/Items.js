@@ -25,9 +25,9 @@ const Center = styled.div`
 
 const ItemsList = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 60px;
-  max-width: ${props => props.theme.maxWidth}; // from Page.js
+  grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+  grid-gap: 1em;
+  max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
 `;
 
