@@ -59,12 +59,13 @@ describe('<Nav />', () => {
     await wait();
     wrapper.update();
     const nav = wrapper.find('ul[data-test="nav"]');
-    expect(nav.children().length).toBe(6);
+    console.log(nav.debug());
+    expect(nav.children().length).toBe(7);
     expect(nav.text()).toContain('Sign Out');
     expect(nav.text()).toContain('Sell');
     expect(nav.text()).toContain('Orders');
     expect(nav.text()).toContain('Account');
-    expect(nav.find('Link')).toHaveLength(4);
+    expect(nav.find('Link')).toHaveLength(5);
     expect(
       nav
         .find('Link')

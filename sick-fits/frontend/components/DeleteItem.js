@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ALL_ITEMS_QUERY } from './Items';
+import { PAGINATION_QUERY } from './Pagination';
 
 const DELETE_ITEM_MUTATION = gql`
   mutation deleteItem($id: ID!) {
@@ -30,6 +31,7 @@ class DeleteItem extends Component {
       <Mutation
         mutation={DELETE_ITEM_MUTATION}
         variables={{ id: this.props.id }}
+        refetchQueries={[{ query: PAGINATION_QUERY }]}
         update={this.update}
       >
         {(deleteItem, { error }) => (
