@@ -42,8 +42,8 @@ const Mutations = {
     });
     // TODO need to check if images are part of the args before calling the delete function args.image && deleteImage()
 
-    function deleteImage(imagePublicId) {
-      cloudinary.v2.uploader.destroy(
+    async function deleteImage(imagePublicId) {
+      return cloudinary.v2.uploader.destroy(
         imagePublicId, { invalidate: true },
         (error, result) => {
           if (error) console.log(`Error deleting image: ${JSON.stringify(error)}`);
@@ -54,8 +54,8 @@ const Mutations = {
 
     // use Cloudinary SDK to delete the existing image via the signed preset
     const { imagePublicId } = item;
-    args.image && deleteImage(imagePublicId);
-
+    const deleteRes = await args.image && deleteImage(imagePublicId);
+    console.log(deleteRes);
     // run the update method
     return ctx.db.mutation.updateItem(
       {
@@ -70,8 +70,8 @@ const Mutations = {
     const where = { id: args.id };
     // 1. Find the item, instead of passing _info_ we ask for specific details
     // we request for the user.id by requesting for the user first
-    const item = await ctx.db.query.item({ where }, '{id title user {id}}');
-    console.log(item);
+    const item = await ctx.db.query.item({ where }, '{id title imagePublicId user {id}}');
+    // console.log(item);
     // 2. Check if they own that item, or have the permissions
     const ownsItem = item.user.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission => ['ADMIN', 'ITEMDELETE'].includes(permission));
@@ -81,6 +81,20 @@ const Mutations = {
     }
 
     // 3. Delete it!
+    function deleteImage(imagePublicId) {
+      return cloudinary.v2.uploader.destroy(
+        imagePublicId, { invalidate: true },
+        (error, result) => {
+          if (error) console.log(`Error deleting image: ${JSON.stringify(error)}`);
+          console.log(`Result of deleting image: ${JSON.stringify(result.result)}`);
+        },
+      );
+    }
+
+    // use Cloudinary SDK to delete the existing image via the signed preset
+    const { imagePublicId } = item;
+    const deleteRes = await imagePublicId && deleteImage(imagePublicId);
+    console.log(deleteRes);
     return ctx.db.mutation.deleteItem({ where }, info);
   },
 
