@@ -12,8 +12,8 @@ Router.onRouteChangeStart = () => {
 Router.onRouteChangeComplete = () => {
   NProgress.done();
 };
-Router.onRouteChangeError = () => {
-  console.log('errored');
+Router.onRouteChangeError = err => {
+  console.log(`errored: ${err.message}`);
 };
 
 const Logo = styled.h1`

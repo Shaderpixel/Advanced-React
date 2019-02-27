@@ -68,7 +68,7 @@ class UpdateItem extends Component {
     });
     // Object.keys(this.state).forEach(key => (this.state[key] = '')); setting values to null will mean on subsequent updates we are deleting those values in the database
     this.state = {};
-    console.log(this.state);
+    // console.log(this.state);
   };
 
   uploadFile = async e => {
@@ -87,7 +87,7 @@ class UpdateItem extends Component {
       }
     );
     const file = await res.json();
-    console.log(file);
+    // console.log(file);
     this.setState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
@@ -99,7 +99,7 @@ class UpdateItem extends Component {
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading }) => {
-          console.log('data', data);
+          // console.log('data', data);
           if (loading) return <p>Loading...</p>;
           if (!data.item) return <p>No Item Found for ID {this.props.id}.</p>;
           return (
